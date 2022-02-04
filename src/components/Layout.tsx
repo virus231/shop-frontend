@@ -1,7 +1,8 @@
 import React from "react";
 import Head from "next/head";
 import { Navigation } from "./Navigation";
-import { Box, Container, Stack } from "@chakra-ui/react";
+import { Box, Container as ContainerChakra } from "@chakra-ui/react";
+import { Container, Footer } from ".";
 
 
 export type LayoutProps = {
@@ -19,20 +20,18 @@ export function Layout({ title, keywords, description, children }: LayoutProps)
             <title>{title ? title : "Page"}</title>
             <meta name="keywords" content={keywords}/>
             <meta name="description" content={description}/>
-            <meta name="viewport" content="initial-scale=1, width=device-width" />
+            <meta name="viewport" content="initial-scale=1, width=device-width"/>
             <link rel="icon" href="/static/favicon.ico"/>
         </Head>
-        <Stack d="flex" flexDirection="column" overflowX="hidden" overflowY="auto">
-            <Navigation/>
-
+        <Navigation/>
+        <Container>
             <Box flex={1} position="relative">
-                <Container maxW="container.xl">
+                <ContainerChakra maxW="container.xl">
                     <>{children}</>
-                </Container>
+                </ContainerChakra>
             </Box>
-            {/*<Box>*/}
-            {/*    <Footer/>*/}
-            {/*</Box>*/}
-        </Stack>
+        </Container>
+        <Footer/>
+
     </Box>
 }

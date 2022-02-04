@@ -10,20 +10,18 @@ import {
     InputGroup,
     ModalBody,
     ModalCloseButton,
-    ModalContent,
     ModalFooter,
     useToast,
-    InputRightElement
 } from "@chakra-ui/react";
-import {useForm} from "react-hook-form";
-import {IRegisterFields} from "../../utils/types/IRegisterFields";
-import {registerSchema} from "../../utils/validation";
-import {mutate} from "swr";
-import {registerUser} from "../../utils/api/users";
-import {setCookie} from "nookies";
-import {CheckIcon} from "@chakra-ui/icons";
+import { useForm } from "react-hook-form";
+import { IRegisterFields } from "../../utils/types/IRegisterFields";
+import { registerSchema } from "../../utils/validation";
+import { mutate } from "swr";
+import { registerUser } from "../../services/api/users";
+import { setCookie } from "nookies";
+import { CheckIcon } from "@chakra-ui/icons";
 import useSwr from "swr";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useStore } from "../../lib/zustandProvider";
 
@@ -32,23 +30,28 @@ export type PropsModal = {
     onClose: () => void
 }
 
-export function ModalRegister({onClose}: PropsModal) {
+export function ModalRegister({ onClose }: PropsModal)
+{
     const toast = useToast();
     const router = useRouter();
     const setUser = useStore(state => state.setUser)
 
-    const {register, handleSubmit, formState: {errors, isSubmitting, isValid}} = useForm<IRegisterFields>({
+    const { register, handleSubmit, formState: { errors, isSubmitting, isValid } } = useForm<IRegisterFields>({
         mode: "onChange",
         resolver: yupResolver(registerSchema)
     });
 
-    const submit = async (values: IRegisterFields) => {
-        try {
-            const user = await mutate('/auth/register', registerUser(values))
+    const submit = async (values: IRegisterFields) =>
+    {
+        try
+        {
+            const user = await mutate("/auth/signup", registerUser(values));
+            console.log(user)
             setCookie(null, "authToken", user.token, {
                 maxAge: 30 * 24 * 60 * 60,
                 path: "/"
             });
+            await router.push("/profile");
             toast({
                 title: "Реєстрація успішна",
                 status: "success",
@@ -58,15 +61,15 @@ export function ModalRegister({onClose}: PropsModal) {
             setUser({
                 id: user.id,
                 email: user.email,
-                fullName: user.fullName,
-                createdAt: user.createdAt,
-                updateAt: user.updateAt,
+                // fullName: user.fullName,
+                // createdAt: user.createdAt,
+                // updateAt: user.updateAt,
             });
-            router.push("/profile");
             onClose();
-
-        } catch (e) {
-            if (e.response) {
+        } catch (e)
+        {
+            if (e.response)
+            {
                 toast({
                     title: `${e.response.data.message}`,
                     status: "error",

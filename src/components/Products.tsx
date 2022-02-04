@@ -1,11 +1,17 @@
 import React from "react";
 import { SimpleGrid } from "@chakra-ui/react";
 import { ProductItem } from "./Product/ProductItem";
-import { products } from "../Mock/mock";
 
-export function Products()
+
+type Props = {
+    products: any[];
+}
+
+export function Products({ products }: Props)
 {
-    return <SimpleGrid columns={[2, null, 3]} spacing={10} mt="30px">
-        {products.map((product, i) => <ProductItem key={i} product={product}/>)}
+    return <SimpleGrid columns={[1, 1, 2, 3]} spacing={8}>
+        {products.map((product: any) => (
+            <ProductItem key={product.id} product={product}/>
+        ))}
     </SimpleGrid>
 }

@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react'
 
-export const StoreContext = createContext(null)
+export const StoreContext = createContext(null);
 
 
 export const StoreProvider = ({ children, store }) => {
@@ -8,8 +8,8 @@ export const StoreProvider = ({ children, store }) => {
 }
 
 export const useStore = (selector, eqFn?) => {
-  const store = useContext(StoreContext)
-  const values = store(selector, eqFn)
+  const store = useContext(StoreContext);
+  const values = store(selector, eqFn)!;
 
   return values
 }
